@@ -15,7 +15,7 @@ app.get('/usuario', function (req, res) {
 
 
 app.get('/manu', function (req, res) {
-    res.json('¡¡¡OYE!!! ME ENCANTASSSSSSSSSSS..');
+    res.json('¡¡¡OYE!!! ME ENCANTASSSSSSSSSSS manuelita...');
 })
 
 app.post('/usuario', function (req, res) {
