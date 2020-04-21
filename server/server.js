@@ -11,6 +11,11 @@ app.use(bodyParser.json())
 
 app.get('/usuario', function (req, res) {
     res.json('¡Animo! hoy terminaras todo tu trabajo temprano y no te trasnocharas mucho, chica fit')
+});
+
+
+app.get('/manu', function (req, res) {
+    res.json('¡¡¡OYE!!! ME ENCANTASSSSSSSSSSS..');
 })
 
 app.post('/usuario', function (req, res) {
@@ -19,16 +24,17 @@ app.post('/usuario', function (req, res) {
     if (!body.nombre) {
         res.status(400).json({
             ok: false,
-            mensaje:'El nombre es necesario'
+            mensaje: 'El nombre es necesario'
         });
     } else {
         res.json({
             persona: body
-        });        
+        });
     }
 
+});
 
-})
+
 
 app.put('/usuario/:id', function (req, res) {
     let id = req.params.id;
