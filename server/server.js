@@ -10,7 +10,7 @@ app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())
 
 app.get('/usuario', function (req, res) {
-    res.json('get usuario')
+    res.json('¡Animo! hoy terminaras todo tu trabajo temprano y no te trasnocharas mucho, chica fit')
 })
 
 app.post('/usuario', function (req, res) {
