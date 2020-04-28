@@ -10,10 +10,10 @@ app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())
 
 app.get('/usuario', function (req, res) {
-    res.json('¡Animo! hoy terminaras todo tu trabajo temprano y no te trasnocharas mucho, chica fit')
+    res.json('app')
 });
 
-app.get('/cami', function (req, res) {
+app.get('/camii', function (req, res) {
     res.json('¡¡¡OYE CAMI!!! Cosita rica :)');
 })
 
