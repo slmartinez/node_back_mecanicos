@@ -13,9 +13,8 @@ app.get('/usuario', function (req, res) {
     res.json('¡Animo! hoy terminaras todo tu trabajo temprano y no te trasnocharas mucho, chica fit')
 });
 
-
-app.get('/manu', function (req, res) {
-    res.json('¡¡¡OYE!!! ME ENCANTASSSSSSSSSSS manuelita...');
+app.get('/cami', function (req, res) {
+    res.json('¡¡¡OYE CAMI!!! Cosita rica :)');
 })
 
 app.post('/usuario', function (req, res) {
