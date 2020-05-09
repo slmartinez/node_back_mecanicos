@@ -51,6 +51,12 @@ let usuarioSchema = new Schema({
     } //default: 'USER_ROLE'
 });
 
+usuarioSchema.methods.toJSON = function () {
+    let userObject = this.toObject();
+    delete userObject.password;
+    return userObject;
+}
+
 usuarioSchema.plugin(uniqueValidator, {
     message: '{PATH} debe de ser único'
 });

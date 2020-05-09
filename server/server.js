@@ -13,12 +13,24 @@ app.use(bodyParser.json())
 
 app.use(require('./routes/usuario'));
 
+// mongoose.set('useCreateIndex', true);
+mongoose.set('useFindAndModify', false);
+
+mongoose.connect(process.env.URLDB, { useNewUrlParser: true, useUnifiedTopology: true,useCreateIndex : true}).then(
+    () => { 
+        console.log("conexion realizada");
+    },
+    err => {
+        console.log("error de conexion",err);
+     }
+);
 
 
- mongoose.connect('mongodb://localhost:27017/mecanicos', (err,res) => {
-    if (err) throw err;
-    console.log('Base de datos ONLINE');
-});
+
+//  mongoose.connect('mongodb://localhost:27017/mecanicos', (err,res) => {
+//     if (err) throw err;
+//     console.log('Base de datos ONLINE');
+// });
 
 app.listen(process.env.PORT,()=> {
     console.log("escuchando puerto: " +process.env.PORT+ "");
