@@ -7,8 +7,8 @@ const app = express();
 
 
 
-app.get('/cami', function (req, res) {
-    res.json('hey tu bonita !!! en la tarde estará llegando algo a tu apto y no son dulces (espero te guste)');
+app.get('/covid', function (req, res) {
+    res.json('¡¡¡ATENCION!!! #MateoCovid19 @TEOFLOW ¡¡DENUNCIE!! NO TENER ACERCAMIENTOS ¡¡ATENCIÓN!');
 })
 
 app.post('/usuario', function (req, res) {
@@ -47,7 +47,7 @@ app.get('/usuario', function (req, res) {
     let limite = req.query.limite || 5
     limite = Number(limite);
     //nombre de campos a mostrar si se quieren mostrar todos se dejan vacios
-    Usuario.find({ estado: true}, 'documentoIdentidad nombre estado')
+    Usuario.find({ estado: true }, 'documentoIdentidad nombre estado')
         .skip(desde)
         .limit(limite)
         .exec((err, usuarios) => {
@@ -59,7 +59,7 @@ app.get('/usuario', function (req, res) {
                 });
             }
 
-            Usuario.countDocuments({ estado: true}, (err, conteo) => {
+            Usuario.countDocuments({ estado: true }, (err, conteo) => {
                 res.json({
                     ok: true,
                     usuarios,
