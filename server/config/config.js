@@ -18,11 +18,11 @@ process.env.NODE_ENV = process.env.NODE_ENV || 'dev';
 
 let urlDB;
 
-//if (process.env.NODE_ENV === 'dev') {
- //   urlDB = 'mongodb://localhost:27017/mecanicos';
-//} else {
-urlDB = 'mongodb+srv://rootmecanicos:Mecanicos2020.@cluster0-wk7zr.mongodb.net/mecanicos';
-//}
+if (process.env.NODE_ENV === 'dev') {
+    urlDB = 'mongodb://localhost:27017/mecanicos';
+} else {
+    urlDB = process.env.MONGO_URI;
+}
 
 process.env.URLDB = urlDB;
 
