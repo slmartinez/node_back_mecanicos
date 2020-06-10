@@ -7,24 +7,25 @@ const bodyParser = require('body-parser');
 
 // parse application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: false }))
- 
+
 // parse application/json
 app.use(bodyParser.json())
 
-app.use(require('./routes/usuario'));
+//configuracion global de rutas
+app.use(require('./routes/index.js'));
+
 
 // mongoose.set('useCreateIndex', true);
 mongoose.set('useFindAndModify', false);
 
-mongoose.connect(process.env.URLDB, { useNewUrlParser: true, useUnifiedTopology: true,useCreateIndex : true}).then(
-    () => { 
+mongoose.connect(process.env.URLDB, { useNewUrlParser: true, useUnifiedTopology: true, useCreateIndex: true }).then(
+    () => {
         console.log("conexion realizada");
     },
     err => {
-        console.log("error de conexion",err);
-     }
+        console.log("error de conexion", err);
+    }
 );
-
 
 
 //  mongoose.connect('mongodb://localhost:27017/mecanicos', (err,res) => {
@@ -32,6 +33,6 @@ mongoose.connect(process.env.URLDB, { useNewUrlParser: true, useUnifiedTopology:
 //     console.log('Base de datos ONLINE');
 // });
 
-app.listen(process.env.PORT,()=> {
-    console.log("escuchando puerto: " +process.env.PORT+ "");
-} )
+app.listen(process.env.PORT, () => {
+    console.log("escuchando puerto: " + process.env.PORT + "");
+})

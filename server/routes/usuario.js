@@ -2,16 +2,16 @@ const express = require('express');
 const bcrypt = require('bcrypt');
 const _ = require('underscore');
 const Usuario = require('../models/usuario');
-
+const { verificaToken } = require('../middlewares/autenticacion')
 const app = express();
 
 
 
-app.get('/covid', function (req, res) {
-    res.json('¡¡¡ATENCION!!! #MateoCovid19 @TEOFLOW ¡¡DENUNCIE!! NO TENER ACERCAMIENTOS ¡¡ATENCIÓN!');
-})
+// app.get('/covid', function (req, res) {
+//     res.json('¡¡¡ATENCION!!! #MateoCovid19 @TEOFLOW ¡¡DENUNCIE!! NO TENER ACERCAMIENTOS ¡¡ATENCIÓN!');
+// })
 
-app.post('/usuario', function (req, res) {
+app.post('/usuario', verificaToken, (req, res) => {
     let body = req.body;
 
     let usuario = new Usuario({
@@ -39,7 +39,7 @@ app.post('/usuario', function (req, res) {
     });
 });
 
-app.get('/usuario', function (req, res) {
+app.get('/usuario', verificaToken, (req, res) => {
 
     let desde = req.query.desde || 0;
     desde = Number(desde);
@@ -69,7 +69,7 @@ app.get('/usuario', function (req, res) {
         });
 });
 
-app.put('/usuario/:id', function (req, res) {
+app.put('/usuario/:id', verificaToken, (req, res) => {
 
     let id = req.params.id;
     //SOLO PERMITO ACTUALIZAR ESTOS CAMPOS DEL ARREGLO
@@ -93,7 +93,7 @@ app.put('/usuario/:id', function (req, res) {
 
 });
 
-app.delete('/usuario/:id', function (req, res) {
+app.delete('/usuario/:id', verificaToken, (req, res) => {
 
     let id = req.params.id;
     //de esta manera borro toda una coleccion de la bd
