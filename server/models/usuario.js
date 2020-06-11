@@ -9,43 +9,43 @@ let rolesValidos = {
 };
 
 let usuarioSchema = new Schema({
-    documentoIdentidad: {
-        type: String,
-        unique: true,
-        required: [true, 'el documento de identidad es requerido']
-    },
+    // documentoIdentidad: {
+    //     type: String,
+    //     unique: true,
+    //     required: [true, 'el documento de identidad es requerido']
+    // },
     nombre: {
         type: String
     },
     email: {
         type: String,
         unique: true,
-        required: [true,'El correo es requerido']
+        required: [true, 'El correo es requerido']
     },
     password: {
         type: String,
-        required: [true,'La contraseña es requerida']
+        required: [true, 'La contraseña es requerida']
     },
     telefono: {
         type: String
     },
     direccion: {
-        type:String
+        type: String
     },
     img: {
         type: String,
-        required:false
+        required: false
     },
     estado: {
         type: Boolean,
-        default:true
+        default: true
     },
     google: {
         type: Boolean,
         default: false
     },
     role: {
-        type:String,
+        type: String,
         default: 'MECANICO_USER',
         enum: rolesValidos
     } //default: 'USER_ROLE'

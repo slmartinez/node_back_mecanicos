@@ -15,7 +15,7 @@ app.post('/usuario', verificaToken, (req, res) => {
     let body = req.body;
 
     let usuario = new Usuario({
-        documentoIdentidad: body.documentoIdentidad,
+        // documentoIdentidad: body.documentoIdentidad,
         nombre: body.nombre,
         email: body.email,
         password: bcrypt.hashSync(body.password, 10),
@@ -47,7 +47,7 @@ app.get('/usuario', verificaToken, (req, res) => {
     let limite = req.query.limite || 5
     limite = Number(limite);
     //nombre de campos a mostrar si se quieren mostrar todos se dejan vacios
-    Usuario.find({ estado: true }, 'documentoIdentidad nombre estado')
+    Usuario.find({ estado: true }, 'nombre estado')
         .skip(desde)
         .limit(limite)
         .exec((err, usuarios) => {
