@@ -4,8 +4,10 @@ const jwt = require('jsonwebtoken');
 const { OAuth2Client } = require('google-auth-library');
 const client = new OAuth2Client(process.env.CLIENT_ID);
 const Usuario = require('../models/usuario');
-const app = express();
 
+const cors = require('cors');
+const app = express();
+app.use(cors());
 
 app.post('/login', (req, res) => {
 
@@ -57,9 +59,7 @@ app.post('/login', (req, res) => {
 async function verify(token) {
     const ticket = await client.verifyIdToken({
         idToken: token,
-        audience: process.env.CLIENT_ID,  // Specify the CLIENT_ID of the app that accesses the backend
-        // Or, if multiple clients access the backend:
-        //[CLIENT_ID_1, CLIENT_ID_2, CLIENT_ID_3]
+        audience: process.env.CLIENT_ID,
     });
     const payload = ticket.getPayload();
     return {
@@ -72,80 +72,83 @@ async function verify(token) {
 
 
 app.post('/google', async (req, res) => {
-    let token = req.body.idtoken;
+    console.log("respuestaaaaaaaaaa", req.body.idToken);
+    let token = req.body.idToken;
     let googleUser = await verify(token)
         .catch(e => {
             return res.status(403).json({
                 ok: false,
-                err: e
+                err: 'Token no valido'
             });
         });
 
-    Usuario.findOne({ email: googleUser.email }, (err, usuarioDB) => {
+    if (res.statusCode !== 403) {
+        Usuario.findOne({ email: googleUser.email }, (err, usuarioDB) => {
 
-        if (err) {
-            return res.status(500).json({
-                ok: false,
-                error: err
-            });
-        }
-
-        if (usuarioDB) {
-            if (!usuarioDB.google) {
-                return res.status(400).json({
+            if (err) {
+                return res.status(500).json({
                     ok: false,
-                    err: {
-                        message: 'Tu primer autenticación no se realizo por google, ingresa por el formulario'
-                    }
+                    error: err
                 });
+            }
+
+            if (usuarioDB) {
+                if (!usuarioDB.google) {
+                    return res.status(400).json({
+                        ok: false,
+                        err: {
+                            message: 'Tu primer autenticación no se realizo por google, ingresa por el formulario'
+                        }
+                    });
+                } else {
+
+                    let token = jwt.sign({
+                        usuario: usuarioDB
+                    }, process.env.SEED_KEY, { expiresIn: process.env.CADUCIDAD_TOKEN });
+
+                    return res.json({
+                        ok: true,
+                        usuario: usuarioDB,
+                        token,
+                    });
+
+                }
             } else {
+                //si el usuario no existe en la base de datos
+                let usuario = new Usuario();
 
-                let token = jwt.sign({
-                    usuario: usuarioDB
-                }, process.env.SEED_KEY, { expiresIn: process.env.CADUCIDAD_TOKEN });
+                usuario.nombre = googleUser.nombre;
+                usuario.email = googleUser.email;
+                usuario.img = googleUser.img;
+                usuario.google = true;
+                usuario.password = ':)';
 
-                return res.json({
-                    ok: true,
-                    usuario: usuarioDB,
-                    token,
+                usuario.save((err, usuarioDB) => {
+
+                    if (err) {
+                        return res.status(500).json({
+                            ok: false,
+                            error: err
+                        });
+                    }
+
+                    let token = jwt.sign({
+                        usuario: usuarioDB
+                    }, process.env.SEED_KEY, { expiresIn: process.env.CADUCIDAD_TOKEN });
+
+                    return res.json({
+                        ok: true,
+                        usuario: usuarioDB,
+                        token,
+                    });
                 });
 
             }
-        } else {
-            //si el usuario no existe en la base de datos
-            let usuario = new Usuario();
 
-            usuario.nombre = googleUser.nombre;
-            usuario.email = googleUser.email;
-            usuario.img = googleUser.img;
-            usuario.google = true;
-            usuario.password = ':)';
-
-            usuario.save((err, usuarioDB) => {
-
-                if (err) {
-                    return res.status(500).json({
-                        ok: false,
-                        error: err
-                    });
-                }
-
-                let token = jwt.sign({
-                    usuario: usuarioDB
-                }, process.env.SEED_KEY, { expiresIn: process.env.CADUCIDAD_TOKEN });
-
-                return res.json({
-                    ok: true,
-                    usuario: usuarioDB,
-                    token,
-                });
+        });
+    }
 
 
-            });
-
-        }
-
-    });
 });
 
 
