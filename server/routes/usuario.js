@@ -2,10 +2,11 @@ const express = require('express');
 const bcrypt = require('bcrypt');
 const _ = require('underscore');
 const Usuario = require('../models/usuario');
-const { verificaToken } = require('../middlewares/autenticacion')
+const { verificaToken } = require('../middlewares/autenticacion');
+
+const cors = require('cors');
 const app = express();
-
-
+app.use(cors());
 
 // app.get('/covid', function (req, res) {
 //     res.json('¡¡¡ATENCION!!! #MateoCovid19 @TEOFLOW ¡¡DENUNCIE!! NO TENER ACERCAMIENTOS ¡¡ATENCIÓN!');
@@ -75,7 +76,8 @@ app.put('/usuario/:id', verificaToken, (req, res) => {
     //SOLO PERMITO ACTUALIZAR ESTOS CAMPOS DEL ARREGLO
     let body = _.pick(req.body, ['nombre', 'email', 'role', 'estado']);
 
-    console.log("neww bodyyyy", body);
+    console.log("este es el body ingresado", body);
+
     //el new lo que hace es enviar el nuevo objeto actualizado
     Usuario.findByIdAndUpdate(id, body, { new: true, runValidators: true }, (err, usuarioDB) => {
         if (err) {
