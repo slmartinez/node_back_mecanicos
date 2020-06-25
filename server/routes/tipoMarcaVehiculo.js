@@ -1,26 +1,25 @@
 const express = require('express');
 const _ = require('underscore');
-const MarcaVehiculo = require('../models/marcaVehiculo');
-const { verificaToken } = require('../middlewares/autenticacion');
+const TipoMarcaVehiculo = require('../models/tipoMarcaVehiculo');
+// const { verificaToken } = require('../middlewares/autenticacion');
 
 const cors = require('cors');
 const app = express();
 app.use(cors());
 
 
-
-//RECORDARRRRRRRRRR VERIFICARRRRRRR EL TOKENNNNNNNNNNNN
-
-app.post('/crearMarcaVehiculo', (req, res) => {
+app.post('/crearTipoMarcaVehiculo', (req, res) => {
     let body = req.body;
 
     console.log("marca vehiculossss", body);
 
-    let marcaVehiculo = new MarcaVehiculo({
-        marca: body.marca
+    let tipoMarcaVehiculo = new TipoMarcaVehiculo({
+        descripcion: body.descripcion,
+        //nombre de la coleccion
+        marcavehiculos: body.idMarcaVehiculo
     });
 
-    marcaVehiculo.save((err, marcaVehiculoBd) => {
+    tipoMarcaVehiculo.save((err, tipoMarcaVehiculoBd) => {
 
 
         if (err) {
@@ -39,17 +38,17 @@ app.post('/crearMarcaVehiculo', (req, res) => {
 
         res.json({
             ok: true,
-            marcaVehiculo: marcaVehiculoBd
+            tipoMarca: tipoMarcaVehiculoBd
         });
     });
 });
 
 
-//RECORDARRRRRRRRRR VERIFICARRRRRRR EL TOKENNNNNNNNNNNN
-app.get('/mostrarMarcaVehiculos', (req, res) => {
+app.get('/mostrarTipoMarcaVehiculo', (req, res) => {
 
-    MarcaVehiculo.find({}, '')
-        .exec((err, marcavehiculos) => {
+    TipoMarcaVehiculo.find({})
+        .populate('marcavehiculos')
+        .exec((err, tipoMarcaVehiculo) => {
             if (err) {
                 return res.status(400).json({
                     ok: false,
@@ -57,15 +56,14 @@ app.get('/mostrarMarcaVehiculos', (req, res) => {
                 });
             }
 
-            MarcaVehiculo.countDocuments({}, (err, conteo) => {
+            TipoMarcaVehiculo.countDocuments({}, (err, conteo) => {
                 res.json({
                     ok: true,
-                    marcavehiculos,
+                    tipoMarcaVehiculo,
                     cuantos: conteo
                 });
             });
         });
 });
-
 
 module.exports = app;
