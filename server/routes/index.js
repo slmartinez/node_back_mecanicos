@@ -5,5 +5,6 @@ app.use(require('./usuario'));
 app.use(require('./login'));
 app.use(require('./marcaVehiculo'));
 app.use(require('./tipoMarcaVehiculo'));
+app.use(require('./tipoServicio'));
 
 module.exports = app;
