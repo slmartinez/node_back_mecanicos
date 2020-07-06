@@ -11,7 +11,6 @@ let tipoServicio = new Schema({
     },
 });
 
-
 tipoServicio.plugin(uniqueValidator, {
     message: '{PATH} debe de ser único'
 });
