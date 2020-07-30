@@ -20,7 +20,8 @@ app.post('/usuario', verificaToken, (req, res) => {
         nombre: body.nombre,
         email: body.email,
         password: bcrypt.hashSync(body.password, 10),
-        role: body.role
+        role: body.role,
+
     });
 
     usuario.save((err, usuarioDB) => {
@@ -39,8 +40,8 @@ app.post('/usuario', verificaToken, (req, res) => {
         });
     });
 });
-
-app.get('/usuario', verificaToken, (req, res) => {
+// verificaToken
+app.get('/usuario', (req, res) => {
 
     let desde = req.query.desde || 0;
     desde = Number(desde);
@@ -48,7 +49,7 @@ app.get('/usuario', verificaToken, (req, res) => {
     let limite = req.query.limite || 5
     limite = Number(limite);
     //nombre de campos a mostrar si se quieren mostrar todos se dejan vacios
-    Usuario.find({ estado: true }, 'nombre estado')
+    Usuario.find({ estado: true }, 'nombre estado telefono')
         .skip(desde)
         .limit(limite)
         .exec((err, usuarios) => {
@@ -106,6 +107,7 @@ app.delete('/usuario/:id', verificaToken, (req, res) => {
     }
 
     Usuario.findByIdAndUpdate(id, cambiaEstado, { new: true }, (err, usuarioEliminado) => {
+
         if (err) {
             return res.status(400).json({
                 ok: false,
