@@ -157,7 +157,7 @@ app.post('/crearCotizacion', (req, res) => {
 
             res.json({
                 ok: true,
-                cotizacion: "bien hecho"
+                cotizacion: cotizacionBd._id
             });
 
         });
