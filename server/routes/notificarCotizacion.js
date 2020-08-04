@@ -54,9 +54,6 @@ app.post('/crearNotificacionUsuario', (req, res) => {
         });
 });
 
-
-
-
 app.put('/actualizarNotificaciones/:id', (req, res) => {
     let id = req.params.id;
     let idUsuario = req.body.idUsuario;
@@ -87,6 +84,28 @@ app.put('/actualizarNotificaciones/:id', (req, res) => {
             }
         })
         .catch(err => console.error(`Failed to find documents: ${err}`))
+});
+
+app.get('/mostrarNotificaciones', (req, res) => {
+
+    NotificacionCotizaciones.find({})
+        .populate('cotizacions')
+        .exec((err, notificacionesBd) => {
+            if (err) {
+                return res.status(400).json({
+                    ok: false,
+                    err
+                });
+            }
+
+            NotificacionCotizaciones.countDocuments({}, (err, conteo) => {
+                res.json({
+                    ok: true,
+                    notificacionesBd,
+                    cuantos: conteo
+                });
+            });
+        });
 });
 
 module.exports = app;
