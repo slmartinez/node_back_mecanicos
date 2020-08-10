@@ -103,18 +103,18 @@ app.put('/actualizarNotificaciones/:id', (req, res) => {
 
 app.get('/mostrarNotificaciones', (req, res) => {
 
-    NotificacionCotizaciones.find({})
-        .populate([{ path: 'cotizacions', select: '_id tiposervicios fechaCreacion', populate: { path: 'tiposervicios' } }])
-        .populate('usuarios')
-        .exec((err, notificacionesBd) => {
-            if (err) {
-                return res.status(400).json({
-                    ok: false,
-                    err
-                });
-            }
+    try {
+        NotificacionCotizaciones.find({})
+            .populate([{ path: 'cotizacions', select: '_id tiposervicios fechaCreacion', populate: { path: 'tiposervicios' } }])
+            .populate('usuarios')
+            .exec((err, notificacionesBd) => {
+                if (err) {
+                    return res.status(400).json({
+                        ok: false,
+                        err
+                    });
+                }
 
-            try {
                 let arrNotificacionCotizacion = [];
                 notificacionesBd.map(function (data) {
                     let objArr = {
@@ -137,17 +137,16 @@ app.get('/mostrarNotificaciones', (req, res) => {
                         cuantos: conteo
                     });
                 });
-            }
-            catch (error) {
-                res.json({
-                    ok: false,
-                    result: error,
-                    cuantos: conteo
-                });
-            }
+            });
 
-
+    } catch (error) {
+        res.json({
+            ok: false,
+            result: error,
+            cuantos: conteo
         });
+    }
+
 });
 
 
