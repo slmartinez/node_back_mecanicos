@@ -14,6 +14,7 @@ var cotizacionNotificacionShema = new Schema({
     }],
     usuarioCotizacion: {
         type: String,
+        required: [true, 'el id para el campo usuarioCotizacion es requerido']
     },
     usuariosNotificacionAbierta: [{
         type: Schema.Types.ObjectId,

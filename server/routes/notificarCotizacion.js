@@ -22,6 +22,7 @@ app.post('/crearNotificacionUsuario', (req, res) => {
 
         .exec((err, usuarios) => {
             if (err) {
+
                 return res.status(400).json({
                     ok: false,
                     err
@@ -42,7 +43,7 @@ app.post('/crearNotificacionUsuario', (req, res) => {
                 if (errSaveNotificacion) {
                     return res.status(400).json({
                         ok: false,
-                        err
+                        errSaveNotificacion
                     });
                 }
 
@@ -104,6 +105,7 @@ app.put('/actualizarNotificaciones/:id', (req, res) => {
 app.get('/mostrarNotificaciones', (req, res) => {
 
     try {
+
         NotificacionCotizaciones.find({})
             .populate([{ path: 'cotizacions', select: '_id tiposervicios fechaCreacion', populate: { path: 'tiposervicios' } }])
             .populate('usuarios')
@@ -140,11 +142,12 @@ app.get('/mostrarNotificaciones', (req, res) => {
             });
 
     } catch (error) {
-        res.json({
-            ok: false,
-            result: error,
-            cuantos: conteo
-        });
+        console.log("catchhhhhhhhhhhhhh")
+        // res.json({
+        //     ok: false,
+        //     result: error,
+        //     cuantos: conteo
+        // });
     }
 
 });
