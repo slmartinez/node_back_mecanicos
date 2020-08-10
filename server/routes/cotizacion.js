@@ -5,6 +5,8 @@ const NotificacionCotizaciones = require('../models/cotizacionNotificacion');
 const Usuario = require('../models/usuario');
 const { verificaToken } = require('../middlewares/autenticacion');
 nodeMailer = require('nodemailer');
+const moment = require('moment-timezone');
+
 
 const cors = require('cors');
 const twilio = require('twilio');
@@ -22,20 +24,20 @@ const client = require('twilio')(accountSid, authToken);
 
 app.post('/crearCotizacion', (req, res) => {
     let body = req.body;
+    let id = body.datosUsuario.identificacion;
 
-    console.log("marca vehiculossss", body);
-
+    const date = moment.tz(Date.now(), "America/Bogota").format('MM/DD/YYYY h:mm:ssa');
     let cotizacion = new Cotizacion({
         tiposervicios: body.tipoServicio,
         marcavehiculos: body.idMarca,
         tipomarcas: body.idtipoMarca,
         modeloVehiculo: body.modeloVehiculo,
         kilometrajeVehiculo: body.kilometrajeVehiculo,
-        observaciones: body.observaciones
+        observaciones: body.observaciones,
+        fechaCreacion: date
     });
 
 
-    let id = body.datosUsuario.identificacion;
 
     let updateDataUser = {
         nombre: body.datosUsuario.nombre,
@@ -127,17 +129,6 @@ app.post('/crearCotizacion', (req, res) => {
                     })();
 
                 });
-
-
-
-            // let notificacionCotizacion = new NotificacionCotizaciones({
-            //     cotizacions: body.tipoServicio,
-            //     marcavehiculos: body.idMarca,
-
-            // });
-
-
-
 
 
             if (errSave) {
