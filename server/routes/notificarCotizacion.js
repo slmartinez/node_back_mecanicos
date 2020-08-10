@@ -114,28 +114,39 @@ app.get('/mostrarNotificaciones', (req, res) => {
                 });
             }
 
-            let arrNotificacionCotizacion = [];
-            notificacionesBd.map(function (data) {
-                let objArr = {
-                    data: {
-                        idCotizacion: data.cotizacions._id,
-                        usuarioServicio: data.usuarios[0].nombre,
-                        fechaCreacion: data.cotizacions.fechaCreacion,
-                        tipoServicios: data.cotizacions.tiposervicios,
-                        usuariosNotificados: data.usuariosNotificados,
-                        usuariosNotificacionAbierta: data.usuariosNotificacionAbierta
-                    },
-                }
-                arrNotificacionCotizacion.push(objArr);
-            });
+            try {
+                let arrNotificacionCotizacion = [];
+                notificacionesBd.map(function (data) {
+                    let objArr = {
+                        data: {
+                            idCotizacion: data.cotizacions._id,
+                            usuarioServicio: data.usuarios[0].nombre,
+                            fechaCreacion: data.cotizacions.fechaCreacion,
+                            tipoServicios: data.cotizacions.tiposervicios,
+                            usuariosNotificados: data.usuariosNotificados,
+                            usuariosNotificacionAbierta: data.usuariosNotificacionAbierta
+                        },
+                    }
+                    arrNotificacionCotizacion.push(objArr);
+                });
 
-            NotificacionCotizaciones.countDocuments({}, (err, conteo) => {
+                NotificacionCotizaciones.countDocuments({}, (err, conteo) => {
+                    res.json({
+                        ok: true,
+                        result: arrNotificacionCotizacion,
+                        cuantos: conteo
+                    });
+                });
+            }
+            catch{
                 res.json({
-                    ok: true,
-                    result: arrNotificacionCotizacion,
+                    ok: false,
+                    result: "error al procesar la información intenta nuevamente",
                     cuantos: conteo
                 });
-            });
+            }
+
+
         });
 });
 
