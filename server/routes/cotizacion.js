@@ -4,7 +4,6 @@ const Cotizacion = require('../models/cotizacion');
 const NotificacionCotizaciones = require('../models/cotizacionNotificacion');
 const Usuario = require('../models/usuario');
 const { verificaToken } = require('../middlewares/autenticacion');
-nodeMailer = require('nodemailer');
 const moment = require('moment-timezone');
 
 
