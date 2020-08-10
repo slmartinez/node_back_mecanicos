@@ -138,10 +138,10 @@ app.get('/mostrarNotificaciones', (req, res) => {
                     });
                 });
             }
-            catch{
+            catch (error) {
                 res.json({
                     ok: false,
-                    result: "error al procesar la información intenta nuevamente",
+                    result: error,
                     cuantos: conteo
                 });
             }
