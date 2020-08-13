@@ -62,6 +62,7 @@ app.put('/actualizarNotificaciones/:id', (req, res) => {
     let userOpenNotify = [];
     NotificacionCotizaciones.findOne({ _id: id })
         .then(data => {
+            console.log("info nueva", data);
             if (data) {
                 console.log("valueeeeee", data);
                 let newArrayUsuarios = data.usuariosNotificados.filter(user => user != idUsuario);
