@@ -118,10 +118,13 @@ app.get('/mostrarNotificaciones', (req, res) => {
                     });
                 }
 
+                console.log("pruebaaaaaaaaaaa", notificacionesBd);
+
                 let arrNotificacionCotizacion = [];
                 notificacionesBd.map(function (data) {
                     let objArr = {
                         data: {
+                            idNotificacion: data._id,
                             idCotizacion: data.cotizacions._id,
                             usuarioServicio: data.usuarios[0].nombre,
                             fechaCreacion: data.cotizacions.fechaCreacion,
