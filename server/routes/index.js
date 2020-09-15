@@ -8,5 +8,6 @@ app.use(require('./tipoMarcaVehiculo'));
 app.use(require('./tipoServicio'));
 app.use(require('./cotizacion'));
 app.use(require('./notificarCotizacion'));
+app.use(require('./ofertasCotizacion'));
 
 module.exports = app;

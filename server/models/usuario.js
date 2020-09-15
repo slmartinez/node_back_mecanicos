@@ -68,7 +68,13 @@ let usuarioSchema = new Schema({
     direccion: {
         type: String,
         default: ''
-    }
+    },
+
+    tiposervicios: [{
+        type: Schema.Types.ObjectId,
+        ref: 'TipoServicio',
+        default: []
+    }],
 
 });
 

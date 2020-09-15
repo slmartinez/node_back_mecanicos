@@ -26,6 +26,7 @@ app.post('/crearCotizacion', (req, res) => {
     let id = body.datosUsuario.identificacion;
 
     const date = moment.tz(Date.now(), "America/Bogota").format('MM/DD/YYYY h:mm:ssa');
+
     let cotizacion = new Cotizacion({
         tiposervicios: body.tipoServicio,
         marcavehiculos: body.idMarca,

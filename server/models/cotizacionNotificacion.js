@@ -12,10 +12,12 @@ var cotizacionNotificacionShema = new Schema({
         type: Schema.Types.ObjectId,
         ref: 'Usuario',
     }],
+
     usuarioCotizacion: {
         type: String,
         required: [true, 'el id para el campo usuarioCotizacion es requerido']
     },
+
     usuariosNotificacionAbierta: [{
         type: Schema.Types.ObjectId,
         ref: 'Usuario',

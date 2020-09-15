@@ -2,6 +2,7 @@ const express = require('express');
 const bcrypt = require('bcrypt');
 const _ = require('underscore');
 const Usuario = require('../models/usuario');
+const OfertasCotizacion = require('../models/ofertasCotizacion');
 const { verificaToken } = require('../middlewares/autenticacion');
 
 const cors = require('cors');
@@ -71,28 +72,30 @@ app.get('/usuario', (req, res) => {
         });
 });
 
-app.put('/usuario/:id', verificaToken, (req, res) => {
+//ojooooooooo este si vaaaaaaaaa
+// app.put('/usuario/:id', verificaToken, (req, res) => {
+
+app.put('/usuario/:id', (req, res) => {
 
     let id = req.params.id;
     //SOLO PERMITO ACTUALIZAR ESTOS CAMPOS DEL ARREGLO
-    let body = _.pick(req.body, ['nombre', 'email', 'role', 'estado']);
-
-    console.log("este es el body ingresado", body);
+    let body = _.pick(req.body, ['nombre', 'email', 'role', 'estado', 'direccion', 'barrio', 'municipio', 'departamento', 'tiposervicios']);
 
     //el new lo que hace es enviar el nuevo objeto actualizado
     Usuario.findByIdAndUpdate(id, body, { new: true, runValidators: true }, (err, usuarioDB) => {
+
         if (err) {
             return res.status(400).json({
                 ok: false,
                 err
             });
         }
+
         res.json({
             ok: true,
             usuario: usuarioDB
         });
     });
-
 
 });
 
@@ -130,6 +133,79 @@ app.delete('/usuario/:id', verificaToken, (req, res) => {
     });
 });
 
+app.get('/perfilUsuario/:id', (req, res) => {
+
+    let id = req.params.id;
+    OfertasCotizacion.find({
+        idUsuario: id
+    }, '')
+        .exec((err, data) => {
+
+            if (err) {
+                return res.status(400).json({
+                    ok: false,
+                    err
+                });
+            }
+            console.log("esta es la data del documento", data);
+            let enSubasta = [];
+            let enReparacion = [];
+            let finalizados = [];
+
+            data.map(function (res) {
+                // console.log("arreglo de usuarios", users);
+                if (res.activo && !res.enProgreso && !res.terminado) {
+                    enSubasta.push(res);
+                } else if (res.activo && res.enProgreso && !res.terminado) {
+                    enReparacion.push(res);
+                } else {
+                    finalizados.push(res);
+                }
+            });
+
+            res.json({
+                ok: true,
+                subasta: enSubasta,
+                reparacion: enReparacion,
+                finalizados: finalizados,
+            });
+
+
+
+            // Cotizacion.countDocuments({}, (err, conteo) => {
+            //     res.json({
+            //         ok: true,
+            //         cotizacion,
+            //         cuantos: conteo
+            //     });
+            // });
+        });
+});
+
+
+app.get('/perfilUsuarioGeneral/:id', (req, res) => {
+
+    let id = req.params.id;
+    Usuario.find({
+        _id: id
+    }, '')
+        .exec((err, data) => {
+
+            if (err) {
+                return res.status(400).json({
+                    ok: false,
+                    err
+                });
+            }
+            console.log("si señoresssssssssss", data);
+
+            res.json({
+                ok: true,
+                res: data[0]
+            });
+
+        });
+});
 
 
 module.exports = app;
