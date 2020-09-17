@@ -55,7 +55,6 @@ app.get('/mostrarTipoMarcaVehiculo', (req, res) => {
                     err
                 });
             }
-
             TipoMarcaVehiculo.countDocuments({}, (err, conteo) => {
                 res.json({
                     ok: true,

@@ -70,7 +70,6 @@ async function verify(token) {
     }
 }
 
-
 app.post('/google', async (req, res) => {
     console.log("respuestaaaaaaaaaa", req.body.idToken);
     let token = req.body.idToken;
@@ -150,14 +149,6 @@ app.post('/google', async (req, res) => {
 
 
 });
-
-
-
-
-
-
-
-
 
 
 

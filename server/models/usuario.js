@@ -27,14 +27,14 @@ let usuarioSchema = new Schema({
         required: [true, 'La contraseña es requerida']
     },
     telefono: {
-        type: String
+        type: String,
+        default: ''
     },
-    direccion: {
-        type: String
-    },
+
     img: {
         type: String,
-        required: false
+        required: false,
+        default: ''
     },
     estado: {
         type: Boolean,
@@ -52,7 +52,30 @@ let usuarioSchema = new Schema({
     calificacion: {
         type: String,
         default: ''
-    }
+    },
+    municipio: {
+        type: Number,
+        default: null
+    },
+    departamento: {
+        type: Number,
+        default: null
+    },
+    barrio: {
+        type: String,
+        default: ''
+    },
+    direccion: {
+        type: String,
+        default: ''
+    },
+
+    tiposervicios: [{
+        type: Schema.Types.ObjectId,
+        ref: 'TipoServicio',
+        default: []
+    }],
+
 });
 
 usuarioSchema.methods.toJSON = function () {

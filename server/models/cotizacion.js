@@ -25,7 +25,10 @@ let cotizacion = new Schema({
     },
     observaciones: {
         type: String,
-    }
+    },
+    fechaCreacion: {
+        type: String
+    },
 });
 
 
