@@ -79,7 +79,7 @@ app.put('/usuario/:id', (req, res) => {
 
     let id = req.params.id;
     //SOLO PERMITO ACTUALIZAR ESTOS CAMPOS DEL ARREGLO
-    let body = _.pick(req.body, ['nombre', 'email', 'role', 'estado', 'direccion', 'barrio', 'municipio', 'departamento', 'tiposervicios']);
+    let body = _.pick(req.body, ['nombre', 'email', 'role', 'estado', 'direccion', 'barrio', 'municipio', 'departamento', 'tiposervicios','telefono']);
 
     //el new lo que hace es enviar el nuevo objeto actualizado
     Usuario.findByIdAndUpdate(id, body, { new: true, runValidators: true }, (err, usuarioDB) => {

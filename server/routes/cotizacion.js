@@ -24,7 +24,10 @@ const client = require('twilio')(accountSid, authToken);
 app.post('/crearCotizacion', (req, res) => {
     let body = req.body;
     let id = body.datosUsuario.identificacion;
-
+    console.log('aqui estamos');
+    console.log(body);
+    console.log(id);
+    
     const date = moment.tz(Date.now(), "America/Bogota").format('MM/DD/YYYY h:mm:ssa');
 
     let cotizacion = new Cotizacion({
