@@ -10,5 +10,6 @@ app.use(require('./cotizacion'));
 app.use(require('./notificarCotizacion'));
 app.use(require('./ofertasCotizacion'));
 app.use(require('./ofertasTalleres'));
+app.use(require('./vehiculoEnVenta'));
 
 module.exports = app;
