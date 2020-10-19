@@ -4,47 +4,48 @@ let Schema = mongoose.Schema;
 
 let vehiculosEnVenta = new Schema({
 
-    descripcionCorta: {
+    marcaVehiculo: {
         type: String,
         required: [true, 'la descripcion corta es requerida'],
     },
 
-    porcentajeDescuento: {
+    precio: {
         type: Number,
-        required: [true, 'el porcentaje de descuento es requerido'],
+        required: [true, 'el precio es requerido'],
     },
 
-    descripcionLarga: {
+    kilometraje: {
         type: String,
-        required: [true, 'la descripcion larga es requerida'],
+        required: [true, 'kilometraje requerido'],
     },
 
-    cantidadCupones: {
+    ciudad: {
         type: Number,
-        required: [true, 'la descripcion larga es requerida'],
+        required: [true, 'la ciudad es requerida'],
     },
 
-    mapa: {
+
+    nombreAnunciante: {
         type: String,
-        default: 'por Definir',
-        // required: [true, 'mapa requerido'],
+        required: [true, 'el contacto es requerido'],
     },
 
-    nombreTaller: {
+    urlImagenPrincipal: {
         type: String,
-        required: [true, 'el nombre del taller es requerido'],
+        required: [true, 'La imagen principal es requerida'],
     },
 
-    urlImagen: {
+    imagenesDetalles: [{
         type: String,
-        required: [true, 'La imagen es requerida'],
-    },
+        required: [true, 'debe almacenar al menos una imagen'],
+    }],
+
     //para mostrar u ocultar en el home
     estado: {
         type: Boolean,
         default: true
-    }
+    },
 });
 
-module.exports = mongoose.model('ofertaTallere', vehiculosEnVenta);
+module.exports = mongoose.model('vehiculosEnVenta', vehiculosEnVenta);
 

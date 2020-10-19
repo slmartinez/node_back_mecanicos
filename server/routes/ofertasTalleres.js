@@ -1,6 +1,6 @@
 const express = require('express');
 const _ = require('underscore');
-const ofertaTallere = require('../models/ofertaTalleresMEs');
+const ofertaTallere = require('../models/ofertaTalleresMes');
 const { verificaToken } = require('../middlewares/autenticacion');
 
 const cors = require('cors');
