@@ -41,6 +41,39 @@ app.post('/usuario', verificaToken, (req, res) => {
         });
     });
 });
+
+
+//Usuario registrado normal
+app.post('/usuario-normal', (req, res) => {
+    let body = req.body;
+
+    let usuario = new Usuario({
+        // documentoIdentidad: body.documentoIdentidad,
+        nombre: body.email,
+        email: body.email,
+        password: bcrypt.hashSync(body.contrasena, 10),
+        role: body.role,
+
+    });
+
+    usuario.save((err, usuarioDB) => {
+
+        if (err) {
+            return res.status(400).json({
+                ok: false,
+                error: err
+            });
+        }
+
+
+        res.json({
+            ok: true,
+            usuario: usuarioDB
+        });
+    });
+});
+
+
 // verificaToken
 app.get('/usuario', (req, res) => {
 
@@ -79,7 +112,7 @@ app.put('/usuario/:id', (req, res) => {
 
     let id = req.params.id;
     //SOLO PERMITO ACTUALIZAR ESTOS CAMPOS DEL ARREGLO
-    let body = _.pick(req.body, ['nombre', 'email', 'role', 'estado', 'direccion', 'barrio', 'municipio', 'departamento', 'tiposervicios','telefono']);
+    let body = _.pick(req.body, ['nombre', 'email', 'role', 'estado', 'direccion', 'barrio', 'municipio', 'departamento', 'tiposervicios', 'telefono']);
 
     //el new lo que hace es enviar el nuevo objeto actualizado
     Usuario.findByIdAndUpdate(id, body, { new: true, runValidators: true }, (err, usuarioDB) => {
@@ -137,8 +170,8 @@ app.get('/perfilUsuario/:id', (req, res) => {
 
     let id = req.params.id;
     OfertasCotizacion.find({
-        idUsuario: id
-    }, '')
+            idUsuario: id
+        }, '')
         .exec((err, data) => {
 
             if (err) {
@@ -152,7 +185,7 @@ app.get('/perfilUsuario/:id', (req, res) => {
             let enReparacion = [];
             let finalizados = [];
 
-            data.map(function (res) {
+            data.map(function(res) {
                 // console.log("arreglo de usuarios", users);
                 if (res.activo && !res.enProgreso && !res.terminado) {
                     enSubasta.push(res);
@@ -187,8 +220,8 @@ app.get('/perfilUsuarioGeneral/:id', (req, res) => {
 
     let id = req.params.id;
     Usuario.find({
-        _id: id
-    }, '')
+            _id: id
+        }, '')
         .exec((err, data) => {
 
             if (err) {

@@ -45,7 +45,19 @@ let vehiculosEnVenta = new Schema({
         type: Boolean,
         default: true
     },
+    modelo: {
+        type: Number,
+        required: [true, 'debe ingresar el modelo el vehículo'],
+    },
+    fechaCreacion: {
+        type: Date
+    },
+    fechaActualizacion: {
+        type: Date
+    },
+    fechaEliminación: {
+        type: Date
+    }
 });
 
 module.exports = mongoose.model('vehiculosEnVenta', vehiculosEnVenta);
-
