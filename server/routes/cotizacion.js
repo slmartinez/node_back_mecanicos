@@ -23,11 +23,11 @@ const client = require('twilio')(accountSid, authToken);
 
 app.post('/crearCotizacion', (req, res) => {
     let body = req.body;
-    let id = body.datosUsuario.identificacion;
+    let id = body.datosUsuario.id_usuario;
     console.log('aqui estamos');
     console.log(body);
     console.log(id);
-    
+
     const date = moment.tz(Date.now(), "America/Bogota").format('MM/DD/YYYY h:mm:ssa');
 
     let cotizacion = new Cotizacion({
@@ -39,7 +39,7 @@ app.post('/crearCotizacion', (req, res) => {
         observaciones: body.observaciones,
         fechaCreacion: date
     });
-
+    console.log(cotizacion);
 
 
     let updateDataUser = {
@@ -49,6 +49,7 @@ app.post('/crearCotizacion', (req, res) => {
         departamento: body.datosUsuario.departamento,
         barrio: body.datosUsuario.barrio,
         direccion: body.datosUsuario.complementoDireccion,
+        documentoIdentidad: body.datosUsuario.identificacion
     }
 
 
@@ -88,7 +89,7 @@ app.post('/crearCotizacion', (req, res) => {
                         });
                     }
 
-                    (async function () {
+                    (async function() {
                         for (var i = 0; i < usuarios.length; i++) {
                             idUsuarios.push(usuarios[i]._id);
                             try {
@@ -100,7 +101,7 @@ app.post('/crearCotizacion', (req, res) => {
                                             from: 'whatsapp:+14155238886',
                                             to: 'whatsapp:+57' + usuarios[i].telefono + ''
                                         })
-                                        .then(function (message) {
+                                        .then(function(message) {
                                             console.log("Successfully sent SMS notification ", message.sid);
                                             next();
                                         })
@@ -109,8 +110,7 @@ app.post('/crearCotizacion', (req, res) => {
                                         })
                                         .done();
                                 })
-                            }
-                            catch (error) {
+                            } catch (error) {
                                 console.log("There was an error trying to send an SMS text message. ", error.reason);
                             }
                         }

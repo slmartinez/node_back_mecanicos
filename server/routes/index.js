@@ -12,6 +12,7 @@ app.use(require('./ofertasCotizacion'));
 app.use(require('./ofertasTalleres'));
 app.use(require('./vehiculoEnVenta'));
 app.use(require('./departamento'));
+app.use(require('./municipio'));
 
 
 module.exports = app;

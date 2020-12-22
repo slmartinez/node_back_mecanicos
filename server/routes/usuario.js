@@ -48,14 +48,13 @@ app.post('/usuario-normal', (req, res) => {
     let body = req.body;
 
     let usuario = new Usuario({
-        // documentoIdentidad: body.documentoIdentidad,
+        documentoIdentidad: body.documentoIdentidad,
         nombre: body.email,
         email: body.email,
-        password: bcrypt.hashSync(body.contrasena, 10),
+        password: bcrypt.hashSync(body.password, 10),
         role: body.role,
-
     });
-
+    console.log(usuario);
     usuario.save((err, usuarioDB) => {
 
         if (err) {

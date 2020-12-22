@@ -9,13 +9,12 @@ let rolesValidos = {
 };
 
 let usuarioSchema = new Schema({
-    // documentoIdentidad: {
-    //     type: String,
-    //     unique: true,
-    //     required: [true, 'el documento de identidad es requerido']
-    // },
     nombre: {
         type: String
+    },
+    documentoIdentidad: {
+        type: String,
+        default: ''
     },
     email: {
         type: String,
@@ -30,7 +29,6 @@ let usuarioSchema = new Schema({
         type: String,
         default: ''
     },
-
     img: {
         type: String,
         required: false,
@@ -78,7 +76,7 @@ let usuarioSchema = new Schema({
 
 });
 
-usuarioSchema.methods.toJSON = function () {
+usuarioSchema.methods.toJSON = function() {
     let userObject = this.toObject();
     delete userObject.password;
     return userObject;
