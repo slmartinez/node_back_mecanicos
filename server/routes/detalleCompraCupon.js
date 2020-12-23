@@ -24,61 +24,84 @@ transporter.verify().then(() => {
 app.post('/crearDetalleCompraCupon/:id', (req, res) => {
 
     let idTallerOferta = req.params.id;
-
     let body = req.body;
-    let cantidadCupones = _.pick(req.body, ['cantidadCupones']);
+    let cantidadCuponesRes = _.pick(req.body, ['cantidadCupones']);
     let email = body.email;
     let nombre = body.nombre;
     let detalleCupon = body.detalleCupon;
-    console.log(cantidadCupones);
-    console.log(idTallerOferta);
+
     let detalleCompraCupones = new detalleCompraCupon({
         idUsuario: body.idUsuario,
         idOfertaTaller: body.idOfertaTaller,
         estado: true,
         fechaCreacion: new Date(),
         fechaActualizacion: new Date(),
-
     });
 
-    ofertaTalleres.findByIdAndUpdate(idTallerOferta, cantidadCupones, { new: true, runValidators: true }, (err, usuarioDB) => {
-        if (err) {
-            return res.status(400).json({
-                ok: false,
-                err
-            });
-        } else {
-            detalleCompraCupones.save((err, detalleCompraCuponDB) => {
-                if (err) {
+    ofertaTalleres.find({ _id: idTallerOferta }, '')
+        .exec((err, ofertataller) => {
+            if (err) {
+                return res.status(400).json({
+                    ok: false,
+                    err
+                });
+            } else {
+                console.log(ofertataller[0].cantidadCupones);
+                if (ofertataller[0].cantidadCupones === 0) {
                     return res.status(400).json({
                         ok: false,
-                        error: err
+                        err: "No hay cupones disponibles"
                     });
-                } else {
-                    if (detalleCupon != undefined && nombre != undefined && email != undefined) {
-                        // send mail with defined transport object
-                        transporter.sendMail({
-                            from: '"sistemas2@tyb.co', // sender address
-                            to: email, // list of receivers
-                            subject: `${nombre}`, // Subject line
-                            html: `${detalleCupon}`, // html body
-                        });
-                        res.json({
-                            ok: true,
-                            res: detalleCompraCuponDB,
-                            cupon: usuarioDB.cantidadCupones
+                }
+                if (cantidadCuponesRes.cantidadCupones > ofertataller[0].cantidadCupones) {
+                    return res.status(400).json({
+                        ok: false,
+                        err: `No hay suficientes cupones para su compra que es de ${cantidadCuponesRes.cantidadCupones} solo nos quedan ${ofertataller[0].cantidadCupones}`
+                    });
+                }
+                let totalCuponesRestantes = {
+                    cantidadCupones: ofertataller[0].cantidadCupones - cantidadCuponesRes.cantidadCupones
+                };
+                ofertaTalleres.findByIdAndUpdate(idTallerOferta, totalCuponesRestantes, { new: true, runValidators: true }, (err, usuarioDB) => {
+                    if (err) {
+                        return res.status(400).json({
+                            ok: false,
+                            err
                         });
                     } else {
-                        res.json({
-                            ok: false,
-                            mensaje: "Error al crear la compra del cupon"
-                        })
-                    }
-                }
+                        detalleCompraCupones.save((err, detalleCompraCuponDB) => {
+                            if (err) {
+                                return res.status(400).json({
+                                    ok: false,
+                                    err: err
+                                });
+                            } else {
+                                if (detalleCupon != undefined && nombre != undefined && email != undefined) {
+                                    // send mail with defined transport object
+                                    transporter.sendMail({
+                                        from: '"sistemas2@tyb.co', // sender address
+                                        to: email, // list of receivers
+                                        subject: `${nombre}`, // Subject line
+                                        html: `${detalleCupon}`, // html body
+                                    });
+                                    res.json({
+                                        ok: true,
+                                        res: detalleCompraCuponDB,
+                                        cupon: usuarioDB.cantidadCupones
+                                    });
+                                } else {
+                                    res.json({
+                                        ok: false,
+                                        mensaje: "Error al crear la compra del cupon"
+                                    })
+                                }
+                            }
 
-            });
-        }
-    });
+                        });
+                    }
+                });
+            }
+        });
 });
 
 ///Obtener todos los detalle compra cupon
@@ -90,7 +113,7 @@ app.get("/mostrarDetalleCompraCupon", (req, res) => {
             if (err) {
                 return res.status(500).json({
                     ok: false,
-                    errors: err,
+                    err: err,
                 });
             }
             res.status(200).json({
