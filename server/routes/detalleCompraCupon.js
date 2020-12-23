@@ -22,7 +22,7 @@ transporter.verify().then(() => {
 })
 
 app.post('/crearDetalleCompraCupon/:id', (req, res) => {
-
+    //información del usuario
     let idTallerOferta = req.params.id;
     let body = req.body;
     let cantidadCuponesRes = _.pick(req.body, ['cantidadCupones']);
@@ -30,6 +30,8 @@ app.post('/crearDetalleCompraCupon/:id', (req, res) => {
     let nombre = body.nombre;
     let detalleCupon = body.detalleCupon;
 
+
+    //Detalle de la compra de cupones
     let detalleCompraCupones = new detalleCompraCupon({
         idUsuario: body.idUsuario,
         idOfertaTaller: body.idOfertaTaller,
@@ -38,6 +40,7 @@ app.post('/crearDetalleCompraCupon/:id', (req, res) => {
         fechaActualizacion: new Date(),
     });
 
+    //Busca la cantidad de cupones actuales disponibles
     ofertaTalleres.find({ _id: idTallerOferta }, '')
         .exec((err, ofertataller) => {
             if (err) {
@@ -46,7 +49,6 @@ app.post('/crearDetalleCompraCupon/:id', (req, res) => {
                     err
                 });
             } else {
-                console.log(ofertataller[0].cantidadCupones);
                 if (ofertataller[0].cantidadCupones === 0) {
                     return res.status(400).json({
                         ok: false,
@@ -62,6 +64,8 @@ app.post('/crearDetalleCompraCupon/:id', (req, res) => {
                 let totalCuponesRestantes = {
                     cantidadCupones: ofertataller[0].cantidadCupones - cantidadCuponesRes.cantidadCupones
                 };
+
+                //Actualiza el total de cupones disponibles
                 ofertaTalleres.findByIdAndUpdate(idTallerOferta, totalCuponesRestantes, { new: true, runValidators: true }, (err, usuarioDB) => {
                     if (err) {
                         return res.status(400).json({
@@ -69,6 +73,7 @@ app.post('/crearDetalleCompraCupon/:id', (req, res) => {
                             err
                         });
                     } else {
+                        //Guarda el detalle de compra del cupon
                         detalleCompraCupones.save((err, detalleCompraCuponDB) => {
                             if (err) {
                                 return res.status(400).json({
@@ -77,7 +82,7 @@ app.post('/crearDetalleCompraCupon/:id', (req, res) => {
                                 });
                             } else {
                                 if (detalleCupon != undefined && nombre != undefined && email != undefined) {
-                                    // send mail with defined transport object
+                                    //Configuración para enviar el correo
                                     transporter.sendMail({
                                         from: '"sistemas2@tyb.co', // sender address
                                         to: email, // list of receivers
@@ -87,7 +92,8 @@ app.post('/crearDetalleCompraCupon/:id', (req, res) => {
                                     res.json({
                                         ok: true,
                                         res: detalleCompraCuponDB,
-                                        cupon: usuarioDB.cantidadCupones
+                                        cupon: usuarioDB.cantidadCupones,
+                                        mensaje: 'Compra exitosa'
                                     });
                                 } else {
                                     res.json({
