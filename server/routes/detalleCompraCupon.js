@@ -1,10 +1,12 @@
 const express = require('express');
+const app = express();
 const _ = require('underscore');
+const cors = require('cors');
+app.use(cors());
+
+const ofertaTalleres = require('../models/ofertaTalleresMes');
 const detalleCompraCupon = require('../models/detalleCompraCupon');
 const { verificaToken } = require('../middlewares/autenticacion');
-const cors = require('cors');
-const app = express();
-app.use(cors());
 
 const nodemailer = require("nodemailer");
 const transporter = nodemailer.createTransport({
@@ -18,12 +20,18 @@ const transporter = nodemailer.createTransport({
 transporter.verify().then(() => {
     console.log('metodo listo');
 })
-app.post('/crearDetalleCompraCupon', (req, res) => {
+
+app.post('/crearDetalleCompraCupon/:id', (req, res) => {
+
+    let idTallerOferta = req.params.id;
+
     let body = req.body;
+    let cantidadCupones = _.pick(req.body, ['cantidadCupones']);
     let email = body.email;
     let nombre = body.nombre;
     let detalleCupon = body.detalleCupon;
-
+    console.log(cantidadCupones);
+    console.log(idTallerOferta);
     let detalleCompraCupones = new detalleCompraCupon({
         idUsuario: body.idUsuario,
         idOfertaTaller: body.idOfertaTaller,
@@ -33,27 +41,43 @@ app.post('/crearDetalleCompraCupon', (req, res) => {
 
     });
 
-    detalleCompraCupones.save((err, detalleCompraCuponDB) => {
-
+    ofertaTalleres.findByIdAndUpdate(idTallerOferta, cantidadCupones, { new: true, runValidators: true }, (err, usuarioDB) => {
         if (err) {
             return res.status(400).json({
                 ok: false,
-                error: err
+                err
+            });
+        } else {
+            detalleCompraCupones.save((err, detalleCompraCuponDB) => {
+                if (err) {
+                    return res.status(400).json({
+                        ok: false,
+                        error: err
+                    });
+                } else {
+                    if (detalleCupon != undefined && nombre != undefined && email != undefined) {
+                        // send mail with defined transport object
+                        transporter.sendMail({
+                            from: '"sistemas2@tyb.co', // sender address
+                            to: email, // list of receivers
+                            subject: `${nombre}`, // Subject line
+                            html: `${detalleCupon}`, // html body
+                        });
+                        res.json({
+                            ok: true,
+                            res: detalleCompraCuponDB,
+                            cupon: usuarioDB.cantidadCupones
+                        });
+                    } else {
+                        res.json({
+                            ok: false,
+                            mensaje: "Error al crear la compra del cupon"
+                        })
+                    }
+                }
+
             });
         }
-
-        // send mail with defined transport object
-        transporter.sendMail({
-            from: '"sistemas2@tyb.co', // sender address
-            to: email, // list of receivers
-            subject: `Hello ✔${nombre}`, // Subject line
-            html: `<b>Realizando prueba desde el backend</b><br>${detalleCupon}`, // html body
-        });
-
-        res.json({
-            ok: true,
-            res: detalleCompraCuponDB
-        });
     });
 });
 
@@ -75,8 +99,5 @@ app.get("/mostrarDetalleCompraCupon", (req, res) => {
             });
         });
 });
-
-
-
 
 module.exports = app;
