@@ -13,6 +13,7 @@ app.use(require('./ofertasTalleres'));
 app.use(require('./vehiculoEnVenta'));
 app.use(require('./departamento'));
 app.use(require('./municipio'));
+app.use(require('./detalleCompraCupon'));
 
 
 module.exports = app;
