@@ -18,7 +18,8 @@ app.post('/crearOfertaTalleres', (req, res) => {
         mapa: body.mapa,
         nombreTaller: body.nombreTaller,
         urlImagen: body.urlImagen,
-        estado: body.estado
+        estado: body.estado,
+        emailTaller: body.emailTaller
     });
 
     ofertaTalleres.save((err, ofertaTalleresDB) => {

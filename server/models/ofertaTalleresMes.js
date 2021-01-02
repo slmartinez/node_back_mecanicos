@@ -29,7 +29,11 @@ let ofertaTalleresMes = new Schema({
         default: 'por Definir',
         // required: [true, 'mapa requerido'],
     },
-
+    emailTaller: {
+        type: String,
+        unique: true,
+        required: [true, 'El correo es requerido']
+    },
     nombreTaller: {
         type: String,
         required: [true, 'el nombre del taller es requerido'],
@@ -47,4 +51,3 @@ let ofertaTalleresMes = new Schema({
 });
 
 module.exports = mongoose.model('ofertaTallere', ofertaTalleresMes);
-

@@ -14,6 +14,6 @@ app.use(require('./vehiculoEnVenta'));
 app.use(require('./departamento'));
 app.use(require('./municipio'));
 app.use(require('./detalleCompraCupon'));
-
+app.use('/uploads', require('./uploads'));
 
 module.exports = app;

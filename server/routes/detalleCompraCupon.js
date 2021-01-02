@@ -7,19 +7,9 @@ app.use(cors());
 const ofertaTalleres = require('../models/ofertaTalleresMes');
 const detalleCompraCupon = require('../models/detalleCompraCupon');
 const { verificaToken } = require('../middlewares/autenticacion');
+const { enviarCorreoCupon } = require('../config/mailer')
 
-const nodemailer = require("nodemailer");
-const transporter = nodemailer.createTransport({
-    service: 'gmail',
-    auth: {
-        user: 'sistemas2@tyb.co', // generated ethereal user
-        pass: 'adminKondors2020.', // generated ethereal password
-    },
-});
 
-transporter.verify().then(() => {
-    console.log('metodo listo');
-})
 
 app.post('/crearDetalleCompraCupon/:id', (req, res) => {
     //información del usuario
@@ -82,13 +72,7 @@ app.post('/crearDetalleCompraCupon/:id', (req, res) => {
                                 });
                             } else {
                                 if (detalleCupon != undefined && nombre != undefined && email != undefined) {
-                                    //Configuración para enviar el correo
-                                    transporter.sendMail({
-                                        from: '"sistemas2@tyb.co', // sender address
-                                        to: email, // list of receivers
-                                        subject: `${nombre}`, // Subject line
-                                        html: `${detalleCupon}`, // html body
-                                    });
+                                    enviarCorreoCupon(email, nombre, detalleCupon);
                                     res.json({
                                         ok: true,
                                         res: detalleCompraCuponDB,
