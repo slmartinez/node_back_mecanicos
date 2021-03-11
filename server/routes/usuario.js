@@ -9,9 +9,9 @@ const cors = require('cors');
 const app = express();
 app.use(cors());
 
-// app.get('/covid', function (req, res) {
-//     res.json('¡¡¡ATENCION!!! #MateoCovid19 @TEOFLOW ¡¡DENUNCIE!! NO TENER ACERCAMIENTOS ¡¡ATENCIÓN!');
-// })
+app.get('/covid', function (req, res) {
+    res.json('¡¡¡ATENCION!!! #MateoCovid19 @TEOFLOW ¡¡DENUNCIE!! NO TENER ACERCAMIENTOS ¡¡ATENCIÓN!');
+})
 
 app.post('/usuario', verificaToken, (req, res) => {
     let body = req.body;
@@ -79,7 +79,7 @@ app.put('/usuario/:id', (req, res) => {
 
     let id = req.params.id;
     //SOLO PERMITO ACTUALIZAR ESTOS CAMPOS DEL ARREGLO
-    let body = _.pick(req.body, ['nombre', 'email', 'role', 'estado', 'direccion', 'barrio', 'municipio', 'departamento', 'tiposervicios','telefono']);
+    let body = _.pick(req.body, ['nombre', 'email', 'role', 'estado', 'direccion', 'barrio', 'municipio', 'departamento', 'tiposervicios', 'telefono']);
 
     //el new lo que hace es enviar el nuevo objeto actualizado
     Usuario.findByIdAndUpdate(id, body, { new: true, runValidators: true }, (err, usuarioDB) => {
