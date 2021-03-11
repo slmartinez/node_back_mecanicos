@@ -11,7 +11,7 @@ app.use(cors());
 
 app.get('/covid', function (req, res) {
     res.json('¡¡¡ATENCION!!! #MateoCovid19 @TEOFLOW ¡¡DENUNCIE!! NO TENER ACERCAMIENTOS ¡¡ATENCIÓN!');
-})
+});
 
 app.post('/usuario', verificaToken, (req, res) => {
     let body = req.body;
