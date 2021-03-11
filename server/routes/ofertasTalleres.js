@@ -59,4 +59,28 @@ app.get('/mostrarOfertasTalleres', (req, res) => {
 });
 
 
+// app.put('/actualizarOfertaTaller/:id', (req, res) => {
+
+//     let id = req.params.id;
+//     //SOLO PERMITO ACTUALIZAR ESTOS CAMPOS DEL ARREGLO
+//     let body = _.pick(req.body, ['cantidadCupones', 'porcentajeDescuento']);
+//     console.log(req.paramos.cantidadCupones);
+//     //el new lo que hace es enviar el nuevo objeto actualizado
+//     ofertaTallere.findByIdAndUpdate(id, body, { new: true, runValidators: true }, (err, usuarioDB) => {
+//         if (err) {
+//             return res.status(400).json({
+//                 ok: false,
+//                 err
+//             });
+//         }
+
+//         res.json({
+//             ok: true,
+//             usuario: usuarioDB
+//         });
+//     });
+
+// });
+
+
 module.exports = app;

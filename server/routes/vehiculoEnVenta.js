@@ -18,7 +18,10 @@ app.post('/vehiculoEnVenta', (req, res) => {
         nombreAnunciante: body.nombreAnunciante,
         urlImagenPrincipal: body.urlImagenPrincipal,
         imagenesDetalles: body.imagenesDetalles,
-        estado: body.estado
+        estado: body.estado,
+        modelo: body.modelo,
+        fechaCreacion: new Date(),
+        fechaActualizacion: new Date()
     });
 
     console.log(vehiculosEnVentas);
