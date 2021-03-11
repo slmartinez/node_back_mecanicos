@@ -9,9 +9,9 @@ const cors = require('cors');
 const app = express();
 app.use(cors());
 
-app.get('/cami', function (req, res) {
-    res.json('¡Maria Camila Te quiero infinitooooo mi amorrrrrrrrrr, me encantassssssssssssss!!!! (tu primera vez en la web jajajajaj) ');
-});
+// app.get('/cami', function (req, res) {
+//     res.json('res json');
+// });
 
 app.post('/usuario', verificaToken, (req, res) => {
     let body = req.body;
