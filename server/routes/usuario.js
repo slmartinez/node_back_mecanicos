@@ -9,8 +9,8 @@ const cors = require('cors');
 const app = express();
 app.use(cors());
 
-app.get('/covid', function (req, res) {
-    res.json('¡¡¡ATENCION!!! #MateoCovid19 @TEOFLOW ¡¡DENUNCIE!! NO TENER ACERCAMIENTOS ¡¡ATENCIÓN!');
+app.get('/cami', function (req, res) {
+    res.json('¡Maria Camila Te quiero infinitooooo mi amorrrrrrrrrr, me encantassssssssssssss!!!! (tu primera vez en la web jajajajaj) ');
 });
 
 app.post('/usuario', verificaToken, (req, res) => {
@@ -169,8 +169,8 @@ app.get('/perfilUsuario/:id', (req, res) => {
 
     let id = req.params.id;
     OfertasCotizacion.find({
-            idUsuario: id
-        }, '')
+        idUsuario: id
+    }, '')
         .exec((err, data) => {
 
             if (err) {
@@ -184,7 +184,7 @@ app.get('/perfilUsuario/:id', (req, res) => {
             let enReparacion = [];
             let finalizados = [];
 
-            data.map(function(res) {
+            data.map(function (res) {
                 // console.log("arreglo de usuarios", users);
                 if (res.activo && !res.enProgreso && !res.terminado) {
                     enSubasta.push(res);
@@ -219,8 +219,8 @@ app.get('/perfilUsuarioGeneral/:id', (req, res) => {
 
     let id = req.params.id;
     Usuario.find({
-            _id: id
-        }, '')
+        _id: id
+    }, '')
         .exec((err, data) => {
 
             if (err) {
