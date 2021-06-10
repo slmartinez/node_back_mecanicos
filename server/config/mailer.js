@@ -3,7 +3,7 @@ const transporter = nodemailer.createTransport({
     service: 'gmail',
     auth: {
         user: 'sistemas2@tyb.co', // generated ethereal user
-        pass: 'adminKondors2020.', // generated ethereal password
+        pass: 'Kondors2020', // generated ethereal password
     },
 });
 
